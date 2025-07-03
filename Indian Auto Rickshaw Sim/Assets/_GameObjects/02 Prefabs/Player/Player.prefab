@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 8612405231438120771}
   - component: {fileID: 6915333469881877816}
   - component: {fileID: 266587730413317322}
+  - component: {fileID: 1132742500879016100}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1009,6 +1010,24 @@ MonoBehaviour:
   frontHiddenRightWheelCollider: {fileID: 2061290870502533190}
   backLeftWheelCollider: {fileID: 8149118395167943938}
   backRightWheelCollider: {fileID: 3021543166214720078}
+--- !u!114 &1132742500879016100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7533518746046969592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c37503bdf92d4e409b18ad858a9a784, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTankCapacity: 850
+  fuelLeftInTank: 0
+  burnRate: 0
+  idleBurnRate: 0.25
+  runningBurnRate: 1
+  breakingBurnRate: 1.25
 --- !u!1 &7995440891488616521
 GameObject:
   m_ObjectHideFlags: 0
