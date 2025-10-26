@@ -32527,6 +32527,7 @@ MonoBehaviour:
   turn: 0
   acceleration: 0
   breaking: 0
+  resetAutoTransform: 0
 --- !u!4 &1569686359
 Transform:
   m_ObjectHideFlags: 0

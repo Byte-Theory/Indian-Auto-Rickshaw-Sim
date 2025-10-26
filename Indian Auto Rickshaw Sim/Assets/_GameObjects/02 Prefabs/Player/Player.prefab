@@ -841,7 +841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleVehicleShake
   shakeIntensity: 0.0025
-  shakeSpeed: 20
+  shakeSpeed: 25
   shakeAmount: {x: 1, y: 0.5, z: 1}
 --- !u!1 &6300354716617759898
 GameObject:
