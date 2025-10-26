@@ -43,6 +43,11 @@ public class PassengerAnimManager : MonoBehaviour
         anim.SetFloat(WalkAnimIdxTag, fac);
     }
 
+    public void PlayWaveAnim()
+    {
+        ResetAllAnim();
+    }
+    
     private void ResetAllAnim()
     {
         anim.SetBool(IdleAnimTag, false);

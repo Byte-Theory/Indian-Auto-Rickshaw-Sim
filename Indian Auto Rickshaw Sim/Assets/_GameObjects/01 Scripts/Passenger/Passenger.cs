@@ -22,6 +22,7 @@ public class Passenger : MonoBehaviour
 
     private void Update()
     {
+        CheckAndCallAutoForRide();
         TickState();
     }
 
@@ -116,6 +117,20 @@ public class Passenger : MonoBehaviour
                 passengerAnimManager.PlayWalkAnim();
                 break;
             }
+
+            case PassengerStates.LookingForRide:
+            {
+                navMeshAgent.isStopped = true;
+                passengerAnimManager.PlayIdleAnim();
+                break;
+            }
+
+            case PassengerStates.CallingAutoForRide:
+            {
+                navMeshAgent.isStopped = true;
+                passengerAnimManager.PlayWaveAnim();
+                break;
+            }
         }
     }
 
@@ -150,6 +165,24 @@ public class Passenger : MonoBehaviour
                 SetCurState(PassengerStates.Idle);
             }
         }
+        else if (curPassengerState == PassengerStates.CallingAutoForRide)
+        {
+            Vector3 direction = player.transform.position - transform.position;
+            direction.y = 0f;
+
+            if (direction.sqrMagnitude < 0.0001f)
+            {
+                return;
+            }
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                10 * Time.deltaTime
+            );
+        }
     }
 
     #endregion
@@ -164,19 +197,21 @@ public class Passenger : MonoBehaviour
         }
         else
         {
-            SetCurState(prevPassengerState);
+            SetCurState(PassengerStates.Idle);
         }
     }
 
-    public void CallAutoForRide(bool callAutoForRide)
+    private void CheckAndCallAutoForRide()
     {
-        if (callAutoForRide)
+        if (curPassengerState == PassengerStates.LookingForRide)
         {
-            SetCurState(PassengerStates.CallingAutoForRide);
-        }
-        else
-        {
-            SetCurState(prevPassengerState);
+            float distance = Vector3.Distance(player.transform.position, transform.position);
+            
+            bool callAutoForRide = distance < Constants.AutoData.CallingAutoForRideDetectionRadius;
+            if (callAutoForRide)
+            {
+                SetCurState(PassengerStates.CallingAutoForRide);
+            }
         }
     }
 
