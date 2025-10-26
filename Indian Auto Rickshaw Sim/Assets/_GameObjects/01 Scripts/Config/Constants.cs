@@ -6,8 +6,8 @@ public static class Constants
     {
         // Passenger Detection
         public static int TotalNewByPassengerToSelect = 3;
-        public static float NearByPassengerDetectionRadius = 15.0f;
-        public static float CallingAutoForRideDetectionRadius = 7.5f;
+        public static float NearByPassengerDetectionRadius = 65.0f;
+        public static float CallingAutoForRideDetectionRadius = 25.0f;
     }
     
     public static class PassengerData
