@@ -7,6 +7,7 @@ public class UserInput : MonoBehaviour
     [SerializeField] private float turn;
     [SerializeField] private float acceleration;
     [SerializeField] private bool breaking;
+    [SerializeField] private bool resetAutoTransform;
 
     #region SingleTon
 
@@ -49,6 +50,7 @@ public class UserInput : MonoBehaviour
         turn = Input.GetAxis("Horizontal");
         acceleration = Input.GetAxis("Vertical");
         breaking = Input.GetKey(KeyCode.Space);
+        resetAutoTransform = Input.GetKey(KeyCode.F);
     }
 
     #region Getters
@@ -66,6 +68,11 @@ public class UserInput : MonoBehaviour
     internal bool GetBreaking()
     {
         return breaking;
+    }
+
+    internal bool ResetAutoTransform()
+    {
+        return resetAutoTransform;
     }
 
     #endregion

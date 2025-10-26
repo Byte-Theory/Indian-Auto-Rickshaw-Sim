@@ -36,6 +36,8 @@ public class Engine : MonoBehaviour
 
     private void FixedUpdate()
     {
+        GetResettingInput();
+        
         GetBreakingInput();
         
         Drive();
@@ -114,6 +116,26 @@ public class Engine : MonoBehaviour
 
     #endregion
 
+    #region Resetting
+
+    
+
+    private void GetResettingInput()
+    {
+        bool resetAutoTransform = userInput.ResetAutoTransform();
+
+        if (resetAutoTransform)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            
+            transform.position += Vector3.up;
+            transform.rotation = Quaternion.identity;
+        }
+    }
+
+    #endregion
+    
     #region Getter
 
     internal Vector3 GetVelocity()
