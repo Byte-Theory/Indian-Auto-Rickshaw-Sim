@@ -203,7 +203,9 @@ public class Passenger : MonoBehaviour
 
     private void CheckAndCallAutoForRide()
     {
-        if (curPassengerState == PassengerStates.LookingForRide)
+        bool isAutoEmpty = player.autoPassenger.GetCarryingPassenger() == null;
+        
+        if (isAutoEmpty && curPassengerState == PassengerStates.LookingForRide)
         {
             float distance = Vector3.Distance(player.transform.position, transform.position);
             
