@@ -4,8 +4,9 @@ using Random = UnityEngine.Random;
 
 public class AutoPassenger : MonoBehaviour
 {
-    [Header("Passenger Container")]
+    [Header("Container And Arrow")]
     public GameObject passengerContainer;
+    public GameObject directionArrow;
     
     private Passenger carryingPassenger = null;
     private List<Passenger> selectedNearByPassengers = new List<Passenger>();
@@ -20,6 +21,7 @@ public class AutoPassenger : MonoBehaviour
         DetectNearByPassengers();
         TryPickUpPassenger();
         CheckIfDropPointReached();
+        UpdateDirectionArrowDirection();
     }
 
     #region Set Up
@@ -29,6 +31,8 @@ public class AutoPassenger : MonoBehaviour
         passengerManager = PassengerManager.Instance;
         
         carryingPassenger = null;
+        
+        ShowDirectionArrow(false);
     }
 
     #endregion
@@ -145,6 +149,8 @@ public class AutoPassenger : MonoBehaviour
         {
             carryingPassenger = passengetToPick;
             passengetToPick.MoveToAuto();
+            
+            ShowDirectionArrow(true);
         }
     }
 
@@ -167,7 +173,41 @@ public class AutoPassenger : MonoBehaviour
             carryingPassenger.ExitTheRide();
             carryingPassenger = null;
             dropOfPoint = null;
+
+            ShowDirectionArrow(false);
         }
+    }
+
+    #endregion
+
+    #region Direction Arrow
+
+    private void ShowDirectionArrow(bool show)
+    {
+        directionArrow.SetActive(show);
+    }
+
+    private void UpdateDirectionArrowDirection()
+    {
+        if (carryingPassenger == null || dropOfPoint == null)
+        {
+            return;
+        }
+        
+        Vector3 direction = dropOfPoint.transform.position - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.0001f)
+        {
+            return;
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        
+        directionArrow.transform.rotation = Quaternion.Lerp(
+            directionArrow.transform.rotation,
+            targetRotation, 
+            Time.deltaTime * 5.0f);
     }
 
     #endregion

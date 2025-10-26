@@ -277,7 +277,11 @@ public class Passenger : MonoBehaviour
             {
                 float fac = lapsedTime / curStateDur;
                 
-                transform.position = Vector3.Lerp(StartStartPos, StartEndPos, fac);
+                transform.position = MathUtils.GetParabolaPoint(
+                    StartStartPos,
+                    StartEndPos,
+                    Constants.PassengerData.JumpAnimHeight,
+                    fac);
                 
                 ContainerGo.transform.localScale = Vector3.Lerp(
                     Vector3.one * Constants.PassengerData.ScaleInAuto,
