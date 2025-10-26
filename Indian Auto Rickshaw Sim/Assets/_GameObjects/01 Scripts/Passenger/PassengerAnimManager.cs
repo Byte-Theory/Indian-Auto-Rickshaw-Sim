@@ -11,6 +11,9 @@ public class PassengerAnimManager : MonoBehaviour
     private readonly string WalkAnimTag = "Walk";
     private readonly string WalkAnimIdxTag = "WalkAnimIdx";
     private readonly int TotalWalkAnimCt = 4;
+    
+    private readonly string WaveAnimTag = "Wave";
+    private readonly string SittingInAutoAnimTag = "SittingInAuto";
 
     #region SetUp
 
@@ -42,15 +45,26 @@ public class PassengerAnimManager : MonoBehaviour
         anim.SetBool(WalkAnimTag, true);
         anim.SetFloat(WalkAnimIdxTag, fac);
     }
-
+    
     public void PlayWaveAnim()
     {
         ResetAllAnim();
+        
+        anim.SetBool(WaveAnimTag, true);
+    }
+    
+    public void PlaySettingInAutoAnim()
+    {
+        ResetAllAnim();
+        
+        anim.SetBool(SittingInAutoAnimTag, true);
     }
     
     private void ResetAllAnim()
     {
         anim.SetBool(IdleAnimTag, false);
         anim.SetBool(WalkAnimTag, false);
+        anim.SetBool(WaveAnimTag, false);
+        anim.SetBool(SittingInAutoAnimTag, false);
     }
 }

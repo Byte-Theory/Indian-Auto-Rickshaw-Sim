@@ -1,12 +1,16 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class AutoPassenger : MonoBehaviour
 {
-    private Passenger carryingPassenger;
+    [Header("Passenger Container")]
+    public GameObject passengerContainer;
+    
+    private Passenger carryingPassenger = null;
     private List<Passenger> selectedNearByPassengers = new List<Passenger>();
+    
+    private PassengerPoint dropOfPoint = null;
     
     // Ref
     private PassengerManager passengerManager;
@@ -14,6 +18,8 @@ public class AutoPassenger : MonoBehaviour
     private void Update()
     {
         DetectNearByPassengers();
+        TryPickUpPassenger();
+        CheckIfDropPointReached();
     }
 
     #region Set Up
@@ -27,7 +33,7 @@ public class AutoPassenger : MonoBehaviour
 
     #endregion
 
-    #region Passengers Detection
+    #region Passengers Detection / PickUp
 
     private void DetectNearByPassengers()
     {
@@ -103,14 +109,78 @@ public class AutoPassenger : MonoBehaviour
         }
     }
 
+    private void TryPickUpPassenger()
+    {
+        if (carryingPassenger != null)
+        {
+            return;
+        }
+        
+        if (selectedNearByPassengers.Count == 0)
+        {
+            return;
+        }
+
+        Passenger passengetToPick = null;
+        
+        for (int i = 0; i < selectedNearByPassengers.Count; i++)
+        {
+            Passenger passenger = selectedNearByPassengers[i];
+            float distance = Vector3.Distance(passenger.transform.position, transform.position);
+
+            if (distance < Constants.AutoData.PassengerPickUpDist)
+            {
+                passengetToPick = passenger;
+                break;
+            }
+        }
+
+        if (passengetToPick == null)
+        {
+            return;
+        }
+
+        PassengerStates passengerState = passengetToPick.GetCurPassengerState();
+        if (passengerState == PassengerStates.CallingAutoForRide)
+        {
+            carryingPassenger = passengetToPick;
+            passengetToPick.MoveToAuto();
+        }
+    }
+
+    public void SetDropOfPoint(PassengerPoint dropPoint)
+    {
+        dropOfPoint = dropPoint;
+    }
+
+    private void CheckIfDropPointReached()
+    {
+        if(carryingPassenger == null || dropOfPoint == null)
+        {
+            return;
+        }
+        
+        float distance = Vector3.Distance(dropOfPoint.transform.position, transform.position);
+
+        if (distance < Constants.AutoData.PassengerPickUpDist)
+        {
+            carryingPassenger.ExitTheRide();
+            carryingPassenger = null;
+            dropOfPoint = null;
+        }
+    }
+
     #endregion
     
     #region Getters / Setters
 
     public Passenger GetCarryingPassenger() => carryingPassenger;
+    public GameObject GetPassengerContainerGo() => passengerContainer;
 
     #endregion
 
+    #region Gizmos
+    
     private void OnDrawGizmos()
     {
         if (!Constants.DebugSettings.ShowGizmos)
@@ -123,5 +193,10 @@ public class AutoPassenger : MonoBehaviour
         
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, Constants.AutoData.CallingAutoForRideDetectionRadius);
+        
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, Constants.AutoData.PassengerPickUpDist);
     }
+    
+    #endregion
 }

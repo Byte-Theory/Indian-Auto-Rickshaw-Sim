@@ -4,11 +4,16 @@ using Random = UnityEngine.Random;
 
 public class Passenger : MonoBehaviour
 {
+    [Header("Container")] 
+    public GameObject ContainerGo;
+    
     // States
     private PassengerStates curPassengerState = PassengerStates.Unknown;
     private PassengerStates prevPassengerState = PassengerStates.Unknown;
     private float curStateStartTime = 0.0f;
     private float curStateDur = 0.0f;
+    private Vector3 StartStartPos;
+    private Vector3 StartEndPos;
     private PassengerPoint targetPassengerPoint;
     
     // Nav mesh
@@ -43,6 +48,9 @@ public class Passenger : MonoBehaviour
         transform.position = startingPoint.transform.position;
         
         navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.enabled = true;
+        
+        ContainerGo.transform.localScale = Vector3.one;
         
         SetCurState(PassengerStates.Idle);
     }
@@ -131,6 +139,52 @@ public class Passenger : MonoBehaviour
                 passengerAnimManager.PlayWaveAnim();
                 break;
             }
+
+            case PassengerStates.GettingInRide:
+            {
+                navMeshAgent.enabled = false;
+                passengerAnimManager.PlayIdleAnim();
+                
+                targetPassengerPoint = passengerManager.CalcNextPoint(transform.position);
+                player.autoPassenger.SetDropOfPoint(targetPassengerPoint);
+                
+                curStateDur = Constants.PassengerData.GettingInRideDuration;
+                break;
+            }
+
+            case PassengerStates.InRide:
+            {
+                navMeshAgent.enabled = false;
+                
+                GameObject passengerContainerGo = player.autoPassenger.GetPassengerContainerGo();
+                Transform passengerContainerT = passengerContainerGo.transform;
+                transform.SetParent(passengerContainerT);
+                transform.localPosition = Vector3.zero;
+                transform.localRotation = Quaternion.identity;
+                
+                ContainerGo.transform.localScale = Vector3.one * Constants.PassengerData.ScaleInAuto;
+                
+                passengerAnimManager.PlaySettingInAutoAnim();
+                break;
+            }
+
+            case PassengerStates.ExitingRide:
+            {
+                transform.SetParent(passengerManager.transform);
+                
+                StartStartPos = transform.position;
+                StartEndPos = targetPassengerPoint.transform.position + 
+                              new Vector3(Random.Range(-2.0f, 2.0f), 0.0f, Random.Range(-2.0f, 2.0f));
+                
+                passengerAnimManager.PlayIdleAnim();
+                break;
+            }
+
+            case PassengerStates.RideCompleted:
+            {
+                navMeshAgent.enabled = true;
+                break;
+            }
         }
     }
 
@@ -146,6 +200,12 @@ public class Passenger : MonoBehaviour
         {
             targetPassengerPoint = passengerManager.CalcNextPoint(transform.position);
             SetCurState(PassengerStates.Moving);
+            return;
+        }
+        
+        if (curPassengerState == PassengerStates.RideCompleted)
+        {
+            SetCurState(PassengerStates.Idle);
             return;
         }
 
@@ -183,6 +243,52 @@ public class Passenger : MonoBehaviour
                 10 * Time.deltaTime
             );
         }
+        else if (curPassengerState == PassengerStates.GettingInRide)
+        {
+            float lapsedTime = Time.time - curStateStartTime;
+            if (lapsedTime < curStateDur)
+            {
+                float fac = lapsedTime / curStateDur;
+                
+                GameObject passengerContainerGo = player.autoPassenger.GetPassengerContainerGo();
+                Transform passengerContainerT = passengerContainerGo.transform;
+                Vector3 targetPos = passengerContainerT.position;
+                
+                transform.position = MathUtils.GetParabolaPoint(
+                    transform.position,
+                    targetPos,
+                    Constants.PassengerData.JumpAnimHeight,
+                    fac);
+                
+                ContainerGo.transform.localScale = Vector3.Lerp(
+                    Vector3.one,
+                    Vector3.one * Constants.PassengerData.ScaleInAuto,
+                    fac);
+            }
+            else
+            {
+                SetCurState(PassengerStates.InRide);
+            }
+        }
+        else if (curPassengerState == PassengerStates.ExitingRide)
+        {
+            float lapsedTime = Time.time - curStateStartTime;
+            if (lapsedTime < curStateDur)
+            {
+                float fac = lapsedTime / curStateDur;
+                
+                transform.position = Vector3.Lerp(StartStartPos, StartEndPos, fac);
+                
+                ContainerGo.transform.localScale = Vector3.Lerp(
+                    Vector3.one * Constants.PassengerData.ScaleInAuto,
+                    Vector3.one,
+                    fac);
+            }
+            else
+            {
+                SetCurState(PassengerStates.RideCompleted);
+            }
+        }
     }
 
     #endregion
@@ -216,6 +322,22 @@ public class Passenger : MonoBehaviour
             }
         }
     }
+
+    public void MoveToAuto()
+    {
+        SetCurState(PassengerStates.GettingInRide);
+    }
+
+    public void ExitTheRide()
+    {
+        SetCurState(PassengerStates.ExitingRide);
+    }
+    
+    #endregion
+
+    #region Getters / Setters
+
+    public PassengerStates GetCurPassengerState() => curPassengerState;
 
     #endregion
 }

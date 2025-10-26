@@ -8,6 +8,7 @@ public static class Constants
         public static int TotalNewByPassengerToSelect = 3;
         public static float NearByPassengerDetectionRadius = 65.0f;
         public static float CallingAutoForRideDetectionRadius = 25.0f;
+        public static float PassengerPickUpDist = 5.0f;
     }
     
     public static class PassengerData
@@ -18,9 +19,14 @@ public static class Constants
         
         // Anim Dur
         public static Vector2 IdleDurationRange = new Vector2(0.25f, 2.5f);
+        public static float GettingInRideDuration = 0.5f;
+        public static float JumpAnimHeight = 0.5f;
         
         // Point Calculation
         public static float NextPointMinThreshold = 5.0f;
+        
+        // Scale
+        public static float ScaleInAuto = 0.65f;
     }
     
     public static class PhoneConfigData

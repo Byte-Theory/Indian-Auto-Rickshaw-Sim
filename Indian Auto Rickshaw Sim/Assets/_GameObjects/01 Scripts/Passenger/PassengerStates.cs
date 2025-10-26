@@ -10,5 +10,6 @@ public enum PassengerStates
     CallingAutoForRide,
     GettingInRide,
     InRide,
+    ExitingRide,
     RideCompleted
 }
