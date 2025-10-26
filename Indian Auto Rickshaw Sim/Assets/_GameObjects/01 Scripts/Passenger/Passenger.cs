@@ -6,6 +6,7 @@ public class Passenger : MonoBehaviour
 {
     // States
     private PassengerStates curPassengerState = PassengerStates.Unknown;
+    private PassengerStates prevPassengerState = PassengerStates.Unknown;
     private float curStateStartTime = 0.0f;
     private float curStateDur = 0.0f;
     private PassengerPoint targetPassengerPoint;
@@ -17,6 +18,7 @@ public class Passenger : MonoBehaviour
     private PassengerManager passengerManager;
     private PassengerAnimManager passengerAnimManager;
     private PassengerVisuals passengerVisuals;
+    private Player player;
 
     private void Update()
     {
@@ -25,9 +27,10 @@ public class Passenger : MonoBehaviour
 
     #region SetUp
 
-    public void SetUp(PassengerManager passengerManager)
+    public void SetUp(PassengerManager passengerManager, Player player)
     {
         this.passengerManager = passengerManager;
+        this.player = player;
 
         passengerAnimManager = GetComponent<PassengerAnimManager>();
         passengerAnimManager.SetUp();
@@ -56,6 +59,18 @@ public class Passenger : MonoBehaviour
 
         SetStateData(newState);
 
+        prevPassengerState = curPassengerState;
+        if (prevPassengerState == PassengerStates.Unknown || 
+            prevPassengerState == PassengerStates.StoppedAtRoadCrossing || 
+            prevPassengerState == PassengerStates.LookingForRide || 
+            prevPassengerState == PassengerStates.CallingAutoForRide || 
+            prevPassengerState == PassengerStates.GettingInRide || 
+            prevPassengerState == PassengerStates.InRide || 
+            prevPassengerState == PassengerStates.RideCompleted)
+        {
+            prevPassengerState = PassengerStates.Idle;
+        }
+        
         curPassengerState = newState;
         curStateStartTime = Time.time;
     }
@@ -134,6 +149,34 @@ public class Passenger : MonoBehaviour
             {
                 SetCurState(PassengerStates.Idle);
             }
+        }
+    }
+
+    #endregion
+
+    #region Auto Detection
+
+    public void SetAutoDetectedNearBy(bool isDetected)
+    {
+        if (isDetected)
+        {
+            SetCurState(PassengerStates.LookingForRide);
+        }
+        else
+        {
+            SetCurState(prevPassengerState);
+        }
+    }
+
+    public void CallAutoForRide(bool callAutoForRide)
+    {
+        if (callAutoForRide)
+        {
+            SetCurState(PassengerStates.CallingAutoForRide);
+        }
+        else
+        {
+            SetCurState(prevPassengerState);
         }
     }
 

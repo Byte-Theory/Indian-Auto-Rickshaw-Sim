@@ -8,15 +8,18 @@ public class Player : MonoBehaviour
     // Ref
     public Engine engine { get; private set; }
     public FuelTank fuelTank { get; private set; }
+    public AutoPassenger autoPassenger { get; private set; }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         engine = GetComponent<Engine>();
         fuelTank = GetComponent<FuelTank>();
+        autoPassenger = GetComponent<AutoPassenger>();
         
         engine.SetUp(this);
         fuelTank.SetUp(this);
+        autoPassenger.SetUp();
         
         SetCurrentState(PlayerState.Running);
     }

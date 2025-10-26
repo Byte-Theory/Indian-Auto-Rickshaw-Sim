@@ -7,6 +7,7 @@ public enum PassengerStates
     Moving,
     StoppedAtRoadCrossing,
     LookingForRide,
+    CallingAutoForRide,
     GettingInRide,
     InRide,
     RideCompleted
