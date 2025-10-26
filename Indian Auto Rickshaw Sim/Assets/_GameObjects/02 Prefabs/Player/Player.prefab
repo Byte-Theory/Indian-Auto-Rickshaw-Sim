@@ -715,6 +715,7 @@ GameObject:
   - component: {fileID: 6795183059646363067}
   - component: {fileID: 2463164357050349946}
   - component: {fileID: 1814361952977507046}
+  - component: {fileID: 6210025039037274133}
   m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
@@ -794,6 +795,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6210025039037274133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6002902296200783316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcdc0cf49b992c64896dfff51dbb38d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleVehicleShake
+  shakeIntensity: 0.0025
+  shakeSpeed: 20
+  shakeAmount: {x: 1, y: 0.5, z: 1}
 --- !u!1 &6659184806640769122
 GameObject:
   m_ObjectHideFlags: 0

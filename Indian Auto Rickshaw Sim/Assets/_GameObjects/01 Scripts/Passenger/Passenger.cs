@@ -246,7 +246,7 @@ public class Passenger : MonoBehaviour
         else if (curPassengerState == PassengerStates.GettingInRide)
         {
             float lapsedTime = Time.time - curStateStartTime;
-            if (lapsedTime < curStateDur)
+            if (lapsedTime <= curStateDur)
             {
                 float fac = lapsedTime / curStateDur;
                 
@@ -273,7 +273,7 @@ public class Passenger : MonoBehaviour
         else if (curPassengerState == PassengerStates.ExitingRide)
         {
             float lapsedTime = Time.time - curStateStartTime;
-            if (lapsedTime < curStateDur)
+            if (lapsedTime <= curStateDur)
             {
                 float fac = lapsedTime / curStateDur;
                 
