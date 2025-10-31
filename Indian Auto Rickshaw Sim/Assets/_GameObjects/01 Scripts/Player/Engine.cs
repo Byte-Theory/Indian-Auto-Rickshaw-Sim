@@ -118,8 +118,6 @@ public class Engine : MonoBehaviour
 
     #region Resetting
 
-    
-
     private void GetResettingInput()
     {
         bool resetAutoTransform = userInput.ResetAutoTransform();

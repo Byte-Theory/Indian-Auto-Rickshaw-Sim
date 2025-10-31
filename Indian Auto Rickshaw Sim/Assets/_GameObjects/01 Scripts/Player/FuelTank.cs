@@ -17,6 +17,7 @@ public class FuelTank : MonoBehaviour
     
     // Refs
     private Player player;
+    private FuelUi fuelUi;
     
     // Update is called once per frame
     void Update()
@@ -30,10 +31,14 @@ public class FuelTank : MonoBehaviour
 
     internal void SetUp(Player player)
     {
+        fuelUi = UiManager.Instance.GamePlayUi.FuelUi;
+        
         this.player = player;
         
         fuelLeftInTank = maxTankCapacity * 0.75f;
         burnRate = idleBurnRate;
+        
+        fuelUi.SetUp(fuelLeftInTank, maxTankCapacity);
     }
 
     #endregion
@@ -53,6 +58,8 @@ public class FuelTank : MonoBehaviour
         {
             fuelLeftInTank = 0;
         }
+        
+        fuelUi.UpdateSlider(fuelLeftInTank);
     }
 
     private void CheckIfTankEmpty()

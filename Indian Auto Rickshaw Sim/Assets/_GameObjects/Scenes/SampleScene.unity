@@ -3159,6 +3159,7 @@ GameObject:
   - component: {fileID: 178829941}
   - component: {fileID: 178829943}
   - component: {fileID: 178829942}
+  - component: {fileID: 178829944}
   m_Layer: 5
   m_Name: Gameplay Menu
   m_TagString: Untagged
@@ -3230,6 +3231,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &178829944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178829940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6209cf6306def7446bbb0cc6e49f15b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamePlayUi
+  fuelUi: {fileID: 754271939}
 --- !u!1001 &178866964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9512,7 +9526,6 @@ GameObject:
   m_Component:
   - component: {fileID: 531123808}
   - component: {fileID: 531123811}
-  - component: {fileID: 531123810}
   - component: {fileID: 531123809}
   m_Layer: 0
   m_Name: MapCamera
@@ -9580,14 +9593,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!81 &531123810
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 531123807}
-  m_Enabled: 1
 --- !u!20 &531123811
 Camera:
   m_ObjectHideFlags: 0
@@ -14525,6 +14530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 754271938}
+  - component: {fileID: 754271939}
   m_Layer: 5
   m_Name: FuleIndicatorContainer
   m_TagString: Untagged
@@ -14553,6 +14559,19 @@ RectTransform:
   m_AnchoredPosition: {x: -30, y: -360}
   m_SizeDelta: {x: 300, y: 75}
   m_Pivot: {x: 1, y: 1}
+--- !u!114 &754271939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754271937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d51ae21c1d3d73646a25b7726716bfda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelUi
+  fuelSlider: {fileID: 920485958}
 --- !u!1 &757281945
 GameObject:
   m_ObjectHideFlags: 0
@@ -38589,6 +38608,7 @@ GameObject:
   - component: {fileID: 1760869900}
   - component: {fileID: 1760869899}
   - component: {fileID: 1760869898}
+  - component: {fileID: 1760869902}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -38679,6 +38699,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1760869902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760869897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08334401044b000479106719bef58ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiManager
+  gamePlayUi: {fileID: 178829944}
 --- !u!1 &1764114914
 GameObject:
   m_ObjectHideFlags: 0
