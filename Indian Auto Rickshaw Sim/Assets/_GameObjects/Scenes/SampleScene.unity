@@ -3244,6 +3244,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlayUi
   fuelUi: {fileID: 754271939}
+  passengersUi: {fileID: 1569809750}
+  inGameMoneyUi: {fileID: 1531574364}
 --- !u!1001 &178866964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4223,6 +4225,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1632491055724481144, guid: 0224638d0a39017489e22c9f618065f4, type: 3}
   m_PrefabInstance: {fileID: 218186230}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &220999195
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 220999196}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &220999196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220999195}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1358413240}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &226924164
 GameObject:
   m_ObjectHideFlags: 0
@@ -29041,6 +29075,51 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355648529}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1358413239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1358413240}
+  - component: {fileID: 1358413241}
+  m_Layer: 0
+  m_Name: InGameMoneyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1358413240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358413239}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 220999196}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1358413241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358413239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9338bf5dc2d81f42aa8d40fe9f5f6c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameMoneyManager
+  carryingMoney: 0
 --- !u!1 &1359450138
 GameObject:
   m_ObjectHideFlags: 0
@@ -33222,6 +33301,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1531574363}
+  - component: {fileID: 1531574364}
   m_Layer: 5
   m_Name: MoneyContainer
   m_TagString: Untagged
@@ -33253,6 +33333,19 @@ RectTransform:
   m_AnchoredPosition: {x: 30, y: -210}
   m_SizeDelta: {x: 320, y: 135}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1531574364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531574362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df75f435abcf75247893a0d0e91dcbb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameMoneyUi
+  moneyTxt: {fileID: 935274101}
 --- !u!1 &1535818056
 GameObject:
   m_ObjectHideFlags: 0
@@ -34580,6 +34673,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1569809749}
+  - component: {fileID: 1569809750}
   m_Layer: 5
   m_Name: PassangersContainer
   m_TagString: Untagged
@@ -34612,6 +34706,19 @@ RectTransform:
   m_AnchoredPosition: {x: 30, y: -40}
   m_SizeDelta: {x: 320, y: 135}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1569809750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569809748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d830f004b7527eb46b5455ae702fee48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PassengersUi
+  passengerDropCtTxt: {fileID: 1530526593}
 --- !u!1 &1570091746
 GameObject:
   m_ObjectHideFlags: 0
@@ -46763,3 +46870,4 @@ SceneRoots:
   - {fileID: 3460603005812438783}
   - {fileID: 1649124626}
   - {fileID: 185147943}
+  - {fileID: 220999196}

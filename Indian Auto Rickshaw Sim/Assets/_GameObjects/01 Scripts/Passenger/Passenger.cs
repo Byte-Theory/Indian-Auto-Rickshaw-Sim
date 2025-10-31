@@ -15,6 +15,7 @@ public class Passenger : MonoBehaviour
     private Vector3 StartStartPos;
     private Vector3 StartEndPos;
     private PassengerPoint targetPassengerPoint;
+    private PassengerPoint targetPassengerPointForRide;
     
     // Nav mesh
     private NavMeshAgent navMeshAgent;
@@ -95,6 +96,8 @@ public class Passenger : MonoBehaviour
 
                 navMeshAgent.isStopped = true;
                 
+                targetPassengerPointForRide = null;
+                
                 passengerAnimManager.PlayIdleAnim();
                 break;
             }
@@ -128,6 +131,11 @@ public class Passenger : MonoBehaviour
 
             case PassengerStates.LookingForRide:
             {
+                if (targetPassengerPointForRide == null)
+                {
+                    targetPassengerPointForRide = passengerManager.CalcNextPoint(transform.position);
+                }
+
                 navMeshAgent.isStopped = true;
                 passengerAnimManager.PlayIdleAnim();
                 break;
@@ -135,6 +143,11 @@ public class Passenger : MonoBehaviour
 
             case PassengerStates.CallingAutoForRide:
             {
+                if (targetPassengerPointForRide == null)
+                {
+                    targetPassengerPointForRide = passengerManager.CalcNextPoint(transform.position);
+                }
+                
                 navMeshAgent.isStopped = true;
                 passengerAnimManager.PlayWaveAnim();
                 break;
@@ -145,7 +158,7 @@ public class Passenger : MonoBehaviour
                 navMeshAgent.enabled = false;
                 passengerAnimManager.PlayIdleAnim();
                 
-                targetPassengerPoint = passengerManager.CalcNextPoint(transform.position);
+                targetPassengerPoint = targetPassengerPointForRide;
                 player.autoPassenger.SetDropOfPoint(targetPassengerPoint);
                 
                 curStateDur = Constants.PassengerData.GettingInRideDuration;
@@ -182,6 +195,8 @@ public class Passenger : MonoBehaviour
 
             case PassengerStates.RideCompleted:
             {
+                targetPassengerPointForRide = null;
+                
                 navMeshAgent.enabled = true;
                 break;
             }
@@ -342,6 +357,8 @@ public class Passenger : MonoBehaviour
     #region Getters / Setters
 
     public PassengerStates GetCurPassengerState() => curPassengerState;
+    
+    public PassengerPoint GetTargetPassengerPoint() => targetPassengerPointForRide;
 
     #endregion
 }

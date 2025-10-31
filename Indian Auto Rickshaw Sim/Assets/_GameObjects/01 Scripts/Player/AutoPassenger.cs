@@ -15,6 +15,7 @@ public class AutoPassenger : MonoBehaviour
     
     // Ref
     private PassengerManager passengerManager;
+    private InGameMoneyManager inGameMoneyManager;
 
     private void Update()
     {
@@ -29,6 +30,7 @@ public class AutoPassenger : MonoBehaviour
     public void SetUp()
     {
         passengerManager = PassengerManager.Instance;
+        inGameMoneyManager = InGameMoneyManager.Instance;
         
         carryingPassenger = null;
         
@@ -170,6 +172,9 @@ public class AutoPassenger : MonoBehaviour
 
         if (distance < Constants.AutoData.PassengerPickUpDist)
         {
+            inGameMoneyManager.TakePaymentFrom(carryingPassenger);
+            passengerManager.PassengerDropOff(carryingPassenger);
+            
             carryingPassenger.ExitTheRide();
             carryingPassenger = null;
             dropOfPoint = null;

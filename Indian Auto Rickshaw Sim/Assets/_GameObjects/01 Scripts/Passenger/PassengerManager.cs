@@ -8,7 +8,12 @@ public class PassengerManager : MonoBehaviour
     [Header("Passenger")]
     public Passenger[] passengers;
     
+    // Passengers Tracker
+    private int totalPassengersDroppedOff;
+    
+    // Ref
     private PassengerPointManager passengerPointManager;
+    private PassengersUi passengersUi;
 
     #region SingleTon
 
@@ -33,11 +38,16 @@ public class PassengerManager : MonoBehaviour
     
     private void Start()
     {
+        passengersUi = UiManager.Instance.GamePlayUi.PassengersUi;
+        
         for (int idx = 0; idx < passengers.Length; idx++)
         {
             Passenger passenger = passengers[idx];
             passenger.SetUp(this, player);
         }
+
+        totalPassengersDroppedOff = 0;
+        passengersUi.UpdatePassengerDropCt(totalPassengersDroppedOff);
     }
 
     #region Passenger Point Manager
@@ -54,6 +64,16 @@ public class PassengerManager : MonoBehaviour
 
     #endregion
 
+    #region DropOff
+
+    public void PassengerDropOff(Passenger passenger)
+    {
+        totalPassengersDroppedOff++;
+        passengersUi.UpdatePassengerDropCt(totalPassengersDroppedOff);
+    }
+
+    #endregion
+    
     #region Getters
 
     public Passenger[] GetAllPassengers() => passengers;

@@ -9,6 +9,9 @@ public static class Constants
         public static float NearByPassengerDetectionRadius = 65.0f;
         public static float CallingAutoForRideDetectionRadius = 25.0f;
         public static float PassengerPickUpDist = 5.0f;
+        
+        // Money
+        public static float MoneyChargesPerUnitDistance = 5.0f;
     }
     
     public static class PassengerData
