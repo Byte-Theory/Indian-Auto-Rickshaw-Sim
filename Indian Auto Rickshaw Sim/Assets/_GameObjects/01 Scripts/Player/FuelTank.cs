@@ -95,4 +95,10 @@ public class FuelTank : MonoBehaviour
     }
 
     #endregion
+
+    #region Getters
+
+    public bool IsTankEmpty => isTankEmpty;
+
+    #endregion
 }

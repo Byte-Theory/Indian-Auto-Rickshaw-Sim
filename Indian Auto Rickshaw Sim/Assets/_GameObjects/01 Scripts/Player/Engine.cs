@@ -25,6 +25,7 @@ public class Engine : MonoBehaviour
     private bool isBreaking;
     
     private Player player;
+    private FuelTank fuelTank;
     private UserInput userInput;
     
     void Update()
@@ -50,6 +51,8 @@ public class Engine : MonoBehaviour
     {
         this.player = player;
         
+        fuelTank = player.fuelTank;
+        
         userInput = UserInput.Instance;
         
         rb = GetComponent<Rigidbody>();
@@ -68,14 +71,26 @@ public class Engine : MonoBehaviour
             
             return;
         }
+
+        if (fuelTank.IsTankEmpty)
+        {
+            return;
+        }
         
         float acceleration = userInput.GetAcceleration();
         
         backLeftWheelCollider.motorTorque = acceleration * maxMotorForce;
         backRightWheelCollider.motorTorque = acceleration * maxMotorForce;
+
+        if (backLeftWheelCollider.brakeTorque != 0)
+        {
+            backLeftWheelCollider.brakeTorque = 0;
+        }
         
-        backLeftWheelCollider.brakeTorque = 0;
-        backRightWheelCollider.brakeTorque = 0;
+        if (backRightWheelCollider.brakeTorque != 0)
+        {
+            backRightWheelCollider.brakeTorque = 0;
+        }
     }
 
     private void Turn()
