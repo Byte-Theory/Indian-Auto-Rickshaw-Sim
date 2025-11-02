@@ -71,13 +71,8 @@ public class Engine : MonoBehaviour
             
             return;
         }
-
-        if (fuelTank.IsTankEmpty)
-        {
-            return;
-        }
         
-        float acceleration = userInput.GetAcceleration();
+        float acceleration = fuelTank.IsTankEmpty ? 0 : userInput.GetAcceleration();
         
         backLeftWheelCollider.motorTorque = acceleration * maxMotorForce;
         backRightWheelCollider.motorTorque = acceleration * maxMotorForce;

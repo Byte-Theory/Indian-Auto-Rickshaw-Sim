@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -27,6 +28,12 @@ public class CameraController : MonoBehaviour
     [Header("Pivot Commons")]
     [SerializeField] private float pivotOffsetUpdateSpeed;
     
+    [Header("Map Camera")]
+    [SerializeField] private Camera mapCamera;
+    [SerializeField] private float zoomInFOV;
+    [SerializeField] private float zoomOutFOV;
+    [SerializeField] private float mapFOVChangeSpeed;
+    
     // Ref
     private Player player;
     
@@ -36,6 +43,7 @@ public class CameraController : MonoBehaviour
         
         SetUpRig();
         SetUpPivot();
+        SetUpMapCamera();
     }
 
     void LateUpdate()
@@ -46,6 +54,8 @@ public class CameraController : MonoBehaviour
         SelectPivotPosOffset();
         MovePivot();
         RotatePivot();
+
+        UpdateMapCameraFOV();
     }
 
     #region Rig
@@ -128,6 +138,24 @@ public class CameraController : MonoBehaviour
         
         pivotOffset = Vector3.Lerp(pivotOffset, finalOffset, Time.deltaTime * pivotOffsetUpdateSpeed);
         pivotRotationOffset = Vector3.Lerp(pivotRotationOffset, finalRotationOffset, Time.deltaTime * pivotOffsetUpdateSpeed);
+    }
+
+    #endregion
+
+    #region Map Camera
+
+    private void SetUpMapCamera()
+    {
+        mapCamera.orthographicSize = zoomInFOV;
+    }
+
+    private void UpdateMapCameraFOV()
+    {
+        Vector3 velocity = player.engine.GetVelocity();
+        float speed = velocity.magnitude;
+        float targetFOV = speed > 5.0f ? zoomOutFOV : zoomInFOV;
+        
+        mapCamera.orthographicSize = Mathf.Lerp(mapCamera.orthographicSize, targetFOV, Time.deltaTime * mapFOVChangeSpeed);
     }
 
     #endregion
