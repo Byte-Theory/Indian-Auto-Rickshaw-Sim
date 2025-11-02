@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class UiItemColorAnimator : MonoBehaviour
 {
     [SerializeField] private bool selfTrigger = false;
+    [SerializeField] private bool useUnscaledTime = false;
     
     [Header("Animation Data")]
     [SerializeField] private bool playOnEnable = false;
@@ -32,7 +33,8 @@ public class UiItemColorAnimator : MonoBehaviour
     {
         if (isAnimating)
         {
-            elapsedTime += Time.deltaTime;
+            float delta = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
+            elapsedTime += delta;
             
             float fac = elapsedTime / duration;
             

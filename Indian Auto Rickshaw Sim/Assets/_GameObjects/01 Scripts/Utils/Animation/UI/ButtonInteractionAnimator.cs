@@ -42,10 +42,10 @@ public class ButtonInteractionAnimator : MonoBehaviour
     {
         if (isAnimating)
         {
-            curAnimTimeElapsed += Time.deltaTime;
+            curAnimTimeElapsed += Time.unscaledDeltaTime;
             float fac = curAnimTimeElapsed / animDur;
             
-            targetRectT.localScale = Vector3.Lerp(targetRectT.localScale, targetScale, Time.deltaTime * scaleChangeSpeed);
+            targetRectT.localScale = Vector3.Lerp(targetRectT.localScale, targetScale, Time.unscaledDeltaTime * scaleChangeSpeed);
 
             if (fac >= 1)
             {
