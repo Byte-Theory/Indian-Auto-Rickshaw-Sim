@@ -12,6 +12,9 @@ public static class Constants
         
         // Money
         public static float MoneyChargesPerUnitDistance = 5.0f;
+        
+        // Fuel
+        public static float FuelRate = 100.0f;
     }
     
     public static class PassengerData

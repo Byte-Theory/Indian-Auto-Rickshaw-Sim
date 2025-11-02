@@ -66,6 +66,16 @@ public class FuelTank : MonoBehaviour
     {
         isTankEmpty = fuelLeftInTank <= 0;
     }
+
+    public void AddFuel(float amt)
+    {
+        fuelLeftInTank += amt;
+
+        if (fuelLeftInTank > maxTankCapacity)
+        {
+            fuelLeftInTank = maxTankCapacity;
+        }
+    }
     
     #endregion
     
@@ -99,6 +109,9 @@ public class FuelTank : MonoBehaviour
     #region Getters
 
     public bool IsTankEmpty => isTankEmpty;
+    public float MaxTankCapacity => maxTankCapacity;
+    public float FuelLeftInTank => fuelLeftInTank;
+    public float MaxFuelRequireToFullTank => (maxTankCapacity - fuelLeftInTank);
 
     #endregion
 }

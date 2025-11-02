@@ -74,4 +74,25 @@ public class InGameMoneyManager : MonoBehaviour
     }
 
     #endregion
+
+    #region Money Operations
+
+    public bool SpendMoney(float amt)
+    {
+        if (amt > carryingMoney)
+        {
+            return false;
+        }
+        
+        carryingMoney -= amt;
+        return true;
+    }
+
+    #endregion
+
+    #region Getters / Setters
+
+    public float CarryingMoney => carryingMoney;
+
+    #endregion
 }
