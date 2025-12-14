@@ -16,6 +16,7 @@ public class Passenger : MonoBehaviour
     private Vector3 StartEndPos;
     private PassengerPoint targetPassengerPoint;
     private PassengerPoint targetPassengerPointForRide;
+    private bool isAlsoLookingForARide = false;
     
     // Nav mesh
     private NavMeshAgent navMeshAgent;
@@ -24,6 +25,7 @@ public class Passenger : MonoBehaviour
     private PassengerManager passengerManager;
     private PassengerAnimManager passengerAnimManager;
     private PassengerVisuals passengerVisuals;
+    private PassengerOptimiser passengerOptimiser;
     private Player player;
 
     private void Update()
@@ -44,6 +46,9 @@ public class Passenger : MonoBehaviour
 
         passengerVisuals = GetComponent<PassengerVisuals>();
         passengerVisuals.SetUp();
+
+        passengerOptimiser = GetComponentInChildren<PassengerOptimiser>();
+        passengerOptimiser.SetUp(passengerAnimManager, passengerVisuals);
         
         PassengerPoint startingPoint = this.passengerManager.CalcRandPoint();
         transform.position = startingPoint.transform.position;
@@ -52,6 +57,8 @@ public class Passenger : MonoBehaviour
         navMeshAgent.enabled = true;
         
         ContainerGo.transform.localScale = Vector3.one;
+        
+        isAlsoLookingForARide = false;
         
         SetCurState(PassengerStates.Idle);
     }
@@ -207,13 +214,15 @@ public class Passenger : MonoBehaviour
     {
         if (curPassengerState == PassengerStates.CalculatingNextState)
         {
-            SetCurState(PassengerStates.CalculatingNextMovePoint);
+            bool wantToMove = Random.value < Constants.PassengerData.WantToMoveChance;
+            SetCurState(wantToMove ? PassengerStates.CalculatingNextMovePoint : PassengerStates.Idle);
             return;
         }
         
         if (curPassengerState == PassengerStates.CalculatingNextMovePoint)
         {
             targetPassengerPoint = passengerManager.CalcNextPoint(transform.position);
+            isAlsoLookingForARide = Random.value < Constants.PassengerData.RideRequirementChance;
             SetCurState(PassengerStates.Moving);
             return;
         }
@@ -316,13 +325,16 @@ public class Passenger : MonoBehaviour
 
     public void SetAutoDetectedNearBy(bool isDetected)
     {
-        if (isDetected)
+        if (isAlsoLookingForARide)
         {
-            SetCurState(PassengerStates.LookingForRide);
-        }
-        else
-        {
-            SetCurState(PassengerStates.Idle);
+            if (isDetected)
+            {
+                SetCurState(PassengerStates.LookingForRide);
+            }
+            else
+            {
+                SetCurState(PassengerStates.Idle);
+            }
         }
     }
 

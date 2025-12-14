@@ -67,4 +67,18 @@ public class PassengerAnimManager : MonoBehaviour
         anim.SetBool(WaveAnimTag, false);
         anim.SetBool(SittingInAutoAnimTag, false);
     }
+
+    #region Optimization
+
+    public void EnableAnimations()
+    {
+        anim.enabled = true;
+    }
+
+    public void DisableAnimations()
+    {
+        anim.enabled = false;
+    }
+
+    #endregion
 }

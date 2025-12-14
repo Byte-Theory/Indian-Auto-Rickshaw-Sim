@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PassengerManager : MonoBehaviour
@@ -6,7 +7,8 @@ public class PassengerManager : MonoBehaviour
     public Player player;
     
     [Header("Passenger")]
-    public Passenger[] passengers;
+    public GameObject passengerPrefab;
+    public List<Passenger> passengers;
     
     // Passengers Tracker
     private int totalPassengersDroppedOff;
@@ -30,7 +32,6 @@ public class PassengerManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        passengers = GetComponentsInChildren<Passenger>();
         passengerPointManager = GetComponentInChildren<PassengerPointManager>();
     }
     
@@ -39,15 +40,29 @@ public class PassengerManager : MonoBehaviour
     private void Start()
     {
         passengersUi = UiManager.Instance.GamePlayUi.PassengersUi;
-        
-        for (int idx = 0; idx < passengers.Length; idx++)
-        {
-            Passenger passenger = passengers[idx];
-            passenger.SetUp(this, player);
-        }
 
+        SpawnAllPassengers();
+        
         totalPassengersDroppedOff = 0;
         passengersUi.UpdatePassengerDropCt(totalPassengersDroppedOff);
+    }
+
+    private void SpawnAllPassengers()
+    {
+        int totalPassengers = Random.Range(Constants.PassengerData.TotalPassengersInLevel.x,
+            Constants.PassengerData.TotalPassengersInLevel.y);
+
+        passengers = new List<Passenger>();
+        
+        for (int idx = 0; idx < totalPassengers; idx++)
+        {
+            GameObject go = Instantiate(passengerPrefab, transform);
+            
+            Passenger passenger = go.GetComponent<Passenger>();
+            passenger.SetUp(this, player);
+            
+            passengers.Add(passenger);
+        }
     }
 
     #region Passenger Point Manager
@@ -76,7 +91,7 @@ public class PassengerManager : MonoBehaviour
     
     #region Getters
 
-    public Passenger[] GetAllPassengers() => passengers;
+    public List<Passenger> GetAllPassengers() => passengers;
 
     #endregion
 }

@@ -19,6 +19,10 @@ public static class Constants
     
     public static class PassengerData
     {
+        public static Vector2Int TotalPassengersInLevel = new Vector2Int(40, 70);
+        public static float WantToMoveChance = 0.5f;
+        public static float RideRequirementChance = 0.5f;
+        
         // Speed
         public static float PassengerMoveSpeed = 2.0f;
         public static Vector2 PassengerMoveSpeedOffset = new Vector2(-0.25f, 0.25f);

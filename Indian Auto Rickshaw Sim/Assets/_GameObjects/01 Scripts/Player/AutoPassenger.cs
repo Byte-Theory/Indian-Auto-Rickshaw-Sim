@@ -66,13 +66,13 @@ public class AutoPassenger : MonoBehaviour
         }
         
         // Calc passengers for selected passengers
-        Passenger[] allPassengers = passengerManager.GetAllPassengers();
+        List<Passenger> allPassengers = passengerManager.GetAllPassengers();
         
         List<Passenger> nearByPassengers = new List<Passenger>();
         List<Passenger> newSelectedNearByPassengers = new List<Passenger>();
         int passengersRequired = Constants.AutoData.TotalNewByPassengerToSelect - selectedNearByPassengers.Count;
 
-        for (int i = 0; i < allPassengers.Length; i++)
+        for (int i = 0; i < allPassengers.Count; i++)
         {
             Passenger passenger = allPassengers[i];
             float distance = Vector3.Distance(passenger.transform.position, transform.position);
