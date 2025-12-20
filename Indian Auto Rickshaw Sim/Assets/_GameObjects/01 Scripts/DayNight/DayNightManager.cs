@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ public class DayPart
 public class DayNightManager : MonoBehaviour
 {
     private static readonly int SkyMatBlendId = Shader.PropertyToID("_Blend");
+    private static readonly int MatEmissionColorId = Shader.PropertyToID("_EmissionColor");
 
     [Header("Direction Light")]
     [SerializeField] private Light mainDirLight;
@@ -44,6 +46,14 @@ public class DayNightManager : MonoBehaviour
     [SerializeField] private Material skyboxBlendMat;
     private float skyBlend;
     
+    [Header("Street Light")]
+    [SerializeField] private GameObject streetLightContainer;
+    private List<Light> streetLights;
+    private bool lightActivationDeactivationGoingOn;
+    
+    [Header("Building Mat")]
+    [SerializeField] private Material buildingMat;
+    
     // Fog
     private Color fogColor;
     private float fogIntensity;
@@ -51,8 +61,7 @@ public class DayNightManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetUpLogic();
-        SetUpSkyBox();
+        SetUp();
     }
 
     // Update is called once per frame
@@ -64,6 +73,18 @@ public class DayNightManager : MonoBehaviour
         UpdateLightColorAndIntensity();
         UpdateSkyBox();
     }
+
+    #region SetUp
+
+    public void SetUp()
+    {
+        CacheAllLight();
+        
+        SetUpLogic();
+        SetUpSkyBox();
+    } 
+ 
+    #endregion
 
     #region DayNight Logic
 
@@ -192,21 +213,31 @@ public class DayNightManager : MonoBehaviour
             float timeSinceMorningStarted = timeOfDay - morningDayPart.startTime;
             skyBlend = timeSinceMorningStarted / morningDur;
             skyboxBlendMat.SetFloat(SkyMatBlendId, 1.0f - skyBlend);
+
+            Color emissionColor = Color.Lerp(Color.white, Color.black, skyBlend);
+            buildingMat.SetColor(MatEmissionColorId, emissionColor);
             
             fogColor = Color.Lerp(fogColor, morningDayPart.fogColor, Time.deltaTime * lightChangeSpeed);
             fogIntensity = Mathf.Lerp(fogIntensity, morningDayPart.fogIntensity, Time.deltaTime * lightChangeSpeed);
             RenderSettings.fogColor = fogColor;
             RenderSettings.fogDensity = fogIntensity / 100000.0f; // 0.00375
+            
+            StartCoroutine(TriggerLightDeactivation());
         }
         else if (timeOfDay > noonDayPart.startTime && timeOfDay <= noonDayPart.endTime)
         {
             skyBlend = 0.0f;
             skyboxBlendMat.SetFloat(SkyMatBlendId, skyBlend);
             
+            Color emissionColor = Color.black;
+            buildingMat.SetColor(MatEmissionColorId, emissionColor);
+            
             fogColor = Color.Lerp(fogColor, noonDayPart.fogColor, Time.deltaTime * lightChangeSpeed);
             fogIntensity = Mathf.Lerp(fogIntensity, noonDayPart.fogIntensity, Time.deltaTime * lightChangeSpeed);
             RenderSettings.fogColor = fogColor;
             RenderSettings.fogDensity = fogIntensity / 100000.0f; // 0.00375
+
+            DisableLight();
         }
         else if (timeOfDay > eveningDayPart.startTime && timeOfDay <= eveningDayPart.endTime)
         {
@@ -214,6 +245,9 @@ public class DayNightManager : MonoBehaviour
             float timeSinceEveningStarted = timeOfDay - eveningDayPart.startTime;
             skyBlend = timeSinceEveningStarted / eveningDur;
             skyboxBlendMat.SetFloat(SkyMatBlendId, skyBlend);
+            
+            Color emissionColor = Color.Lerp(Color.white, Color.black, 1.0f - skyBlend);
+            buildingMat.SetColor(MatEmissionColorId, emissionColor);
             
             fogColor = Color.Lerp(fogColor, eveningDayPart.fogColor, Time.deltaTime * lightChangeSpeed);
             fogIntensity = Mathf.Lerp(fogIntensity, eveningDayPart.fogIntensity, Time.deltaTime * lightChangeSpeed);
@@ -225,11 +259,106 @@ public class DayNightManager : MonoBehaviour
             skyBlend = 1.0f;
             skyboxBlendMat.SetFloat(SkyMatBlendId, skyBlend);
             
+            Color emissionColor = Color.white;
+            buildingMat.SetColor(MatEmissionColorId, emissionColor);
+            
             fogColor = Color.Lerp(fogColor, nightDayPart.fogColor, Time.deltaTime * lightChangeSpeed);
             fogIntensity = Mathf.Lerp(fogIntensity, nightDayPart.fogIntensity, Time.deltaTime * lightChangeSpeed);
             RenderSettings.fogColor = fogColor;
             RenderSettings.fogDensity = fogIntensity / 100000.0f; // 0.00375
+            
+            StartCoroutine(TriggerLightActivation());
         }
+    }
+
+    #endregion
+
+    #region Light
+
+    private void CacheAllLight()
+    {
+        streetLights = new List<Light>();
+        
+        for (int idx = 0; idx < streetLightContainer.transform.childCount; idx++)
+        {
+            GameObject pole = streetLightContainer.transform.GetChild(idx).gameObject;
+            Light[] lights = pole.GetComponentsInChildren<Light>(true);
+            streetLights.AddRange(lights);
+        }
+        
+        Debug.Log(streetLights.Count);
+    }
+
+    private void DisableLight()
+    {
+        for (int idx = 0; idx < streetLights.Count; idx++)
+        {
+            if (streetLights[idx].gameObject.activeSelf)
+            {
+                streetLights[idx].gameObject.SetActive(false);
+            }
+        }
+
+        lightActivationDeactivationGoingOn = false;
+    }
+
+    private void EnableLight()
+    {
+        for (int idx = 0; idx < streetLights.Count; idx++)
+        {
+            if (!streetLights[idx].gameObject.activeSelf)
+            {
+                streetLights[idx].gameObject.SetActive(true);
+            }
+        }
+
+        lightActivationDeactivationGoingOn = false;
+    }
+
+    private IEnumerator TriggerLightActivation()
+    {
+        if (lightActivationDeactivationGoingOn)
+        {
+            yield break;
+        }
+        
+        lightActivationDeactivationGoingOn = true;
+        
+        int idx = 0;
+
+        while (idx < streetLights.Count)
+        {
+            streetLights[idx].gameObject.SetActive(true);
+            streetLights[idx + 1].gameObject.SetActive(true);
+            idx += 2;
+            
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        lightActivationDeactivationGoingOn = false;
+    }
+
+    private IEnumerator TriggerLightDeactivation()
+    {
+        if (lightActivationDeactivationGoingOn)
+        {
+            yield break;
+        }
+        
+        lightActivationDeactivationGoingOn = true;
+        
+        int idx = 0;
+
+        while (idx < streetLights.Count)
+        {
+            streetLights[idx].gameObject.SetActive(false);
+            streetLights[idx + 1].gameObject.SetActive(false);
+            idx += 2;
+            
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        lightActivationDeactivationGoingOn = false;
     }
 
     #endregion

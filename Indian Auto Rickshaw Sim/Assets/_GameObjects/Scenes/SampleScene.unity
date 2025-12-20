@@ -8640,7 +8640,8 @@ MonoBehaviour:
     fogIntensity: 0
   timeOfDay: 0
   skyboxBlendMat: {fileID: 2100000, guid: 3ce3200aaa72db54497984d90c368015, type: 2}
-  fadeDuration: 1
+  streetLightContainer: {fileID: 683668364}
+  buildingMat: {fileID: 2100000, guid: 62e25ef75a2216f418d06453c9ad15cb, type: 2}
 --- !u!1001 &71904710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42815,8 +42816,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 0.40850836, g: 0.42180812, b: 0.6415094, a: 1}
-  m_Intensity: 0.65
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -167491,7 +167492,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 0.29859474, g: 0.20906019, b: 0.509434, a: 1}
+  m_Color: {r: 0.20784312, g: 0.44801718, b: 0.50980395, a: 1}
   m_Intensity: 0.25
   m_Range: 10
   m_SpotAngle: 30
