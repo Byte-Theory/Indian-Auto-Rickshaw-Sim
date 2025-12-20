@@ -54,9 +54,15 @@ public class DayNightManager : MonoBehaviour
     [Header("Building Mat")]
     [SerializeField] private Material buildingMat;
     
+    // Day Ct
+    private int dayNo;
+    
     // Fog
     private Color fogColor;
     private float fogIntensity;
+    
+    // Ref
+    private GamePlayUi gamePlayUi;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -78,10 +84,15 @@ public class DayNightManager : MonoBehaviour
 
     public void SetUp()
     {
+        gamePlayUi = UiManager.Instance.GamePlayUi;
+        
         CacheAllLight();
         
         SetUpLogic();
         SetUpSkyBox();
+
+        dayNo = 0;
+        gamePlayUi.UpdateDatText(dayNo + 1);
     } 
  
     #endregion
@@ -101,6 +112,9 @@ public class DayNightManager : MonoBehaviour
         if (timeOfDay >= hrsInDay)
         {
             timeOfDay = 0.0f;
+            
+            dayNo++;
+            gamePlayUi.UpdateDatText(dayNo + 1);
         }
     }
 
