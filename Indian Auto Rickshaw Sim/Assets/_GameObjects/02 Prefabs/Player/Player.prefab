@@ -1477,12 +1477,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c37503bdf92d4e409b18ad858a9a784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTankCapacity: 850
+  maxTankCapacity: 106.25
   fuelLeftInTank: 0
   burnRate: 0
-  idleBurnRate: 0.25
-  runningBurnRate: 1
-  breakingBurnRate: 1.25
+  idleBurnRate: 0.03125
+  runningBurnRate: 0.125
+  breakingBurnRate: 0.15625
 --- !u!114 &4896232808806266787
 MonoBehaviour:
   m_ObjectHideFlags: 0
