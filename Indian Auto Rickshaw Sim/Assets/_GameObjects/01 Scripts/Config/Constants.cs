@@ -28,9 +28,9 @@ public static class Constants
         public static Vector2 PassengerMoveSpeedOffset = new Vector2(-0.25f, 0.25f);
         
         // Anim Dur
-        public static Vector2 IdleDurationRange = new Vector2(0.25f, 2.5f);
-        public static float GettingInRideDuration = 0.5f;
-        public static float JumpAnimHeight = 0.5f;
+        public static Vector2 IdleDurationRange = new Vector2(0.5f, 3.0f);
+        public static float GettingInRideDuration = 0.30f;
+        public static float JumpAnimHeight = 0.60f;
         
         // Point Calculation
         public static float NextPointMinThreshold = 5.0f;

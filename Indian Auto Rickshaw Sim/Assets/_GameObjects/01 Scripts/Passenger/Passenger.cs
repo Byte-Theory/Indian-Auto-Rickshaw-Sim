@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -20,6 +21,12 @@ public class Passenger : MonoBehaviour
     
     // Nav mesh
     private NavMeshAgent navMeshAgent;
+    
+    // Indicator
+    private GameObject lookingForRideIndicator = null;
+    
+    // Callbacks
+    private Action inRideCallback;
     
     // Ref
     private PassengerManager passengerManager;
@@ -169,6 +176,8 @@ public class Passenger : MonoBehaviour
                 player.autoPassenger.SetDropOfPoint(targetPassengerPoint);
                 
                 curStateDur = Constants.PassengerData.GettingInRideDuration;
+                
+                RemoveLookingForRideIndicator();
                 break;
             }
 
@@ -185,6 +194,8 @@ public class Passenger : MonoBehaviour
                 ContainerGo.transform.localScale = Vector3.one * Constants.PassengerData.ScaleInAuto;
                 
                 passengerAnimManager.PlaySettingInAutoAnim();
+                
+                inRideCallback?.Invoke();
                 break;
             }
 
@@ -223,6 +234,12 @@ public class Passenger : MonoBehaviour
         {
             targetPassengerPoint = passengerManager.CalcNextPoint(transform.position);
             isAlsoLookingForARide = Random.value < Constants.PassengerData.RideRequirementChance;
+
+            if (!isAlsoLookingForARide)
+            {
+                RemoveLookingForRideIndicator();
+            }
+            
             SetCurState(PassengerStates.Moving);
             return;
         }
@@ -323,20 +340,29 @@ public class Passenger : MonoBehaviour
 
     #region Auto Detection
 
-    public void SetAutoDetectedNearBy(bool isDetected)
+    public void SetAutoDetectedNearBy(bool isDetected, bool isAutoFull = false)
     {
         if (isAlsoLookingForARide)
         {
-            if (isDetected)
+            //if (!isAutoFull)
             {
-                SetCurState(PassengerStates.LookingForRide);
+                if (isDetected)
+                {
+                    SetCurState(PassengerStates.LookingForRide);
+                }
+                else
+                {
+                    SetCurState(PassengerStates.Idle);
+                }
             }
-            else
-            {
-                SetCurState(PassengerStates.Idle);
-            }
+
+            ShowLookingForRideIndicator();
         }
-    }
+        else
+        {
+            RemoveLookingForRideIndicator();
+        }
+    } 
 
     private void CheckAndCallAutoForRide()
     {
@@ -354,8 +380,9 @@ public class Passenger : MonoBehaviour
         }
     }
 
-    public void MoveToAuto()
+    public void MoveToAuto(Action inRideCallback)
     {
+        this.inRideCallback = inRideCallback;
         SetCurState(PassengerStates.GettingInRide);
     }
 
@@ -366,6 +393,31 @@ public class Passenger : MonoBehaviour
     
     #endregion
 
+    #region Looking for Ride Indicator
+
+    private void ShowLookingForRideIndicator()
+    {
+        if (lookingForRideIndicator != null)
+        {
+            return;
+        }
+                
+        lookingForRideIndicator = ObjectPooler.Instance.SpawnFromPool(1, transform.position, Quaternion.identity);
+        lookingForRideIndicator.transform.SetParent(transform);
+    }
+
+    private void RemoveLookingForRideIndicator()
+    {
+        if (lookingForRideIndicator != null)
+        {
+            lookingForRideIndicator.SetActive(false);
+            lookingForRideIndicator.transform.SetParent(ObjectPooler.Instance.transform);
+            lookingForRideIndicator = null;
+        }
+    }
+
+    #endregion
+    
     #region Getters / Setters
 
     public PassengerStates GetCurPassengerState() => curPassengerState;

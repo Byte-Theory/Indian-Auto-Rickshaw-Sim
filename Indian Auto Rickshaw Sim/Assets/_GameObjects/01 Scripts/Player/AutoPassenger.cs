@@ -14,6 +14,7 @@ public class AutoPassenger : MonoBehaviour
     private PassengerPoint dropOfPoint = null;
     
     // Ref
+    private Player player;
     private PassengerManager passengerManager;
     private InGameMoneyManager inGameMoneyManager;
 
@@ -27,10 +28,12 @@ public class AutoPassenger : MonoBehaviour
 
     #region Set Up
 
-    public void SetUp()
+    public void SetUp(Player player)
     {
         passengerManager = PassengerManager.Instance;
         inGameMoneyManager = InGameMoneyManager.Instance;
+
+        this.player = player;
         
         carryingPassenger = null;
         
@@ -111,7 +114,7 @@ public class AutoPassenger : MonoBehaviour
         
         for (int i = 0; i < newSelectedNearByPassengers.Count; i++)
         {
-            newSelectedNearByPassengers[i].SetAutoDetectedNearBy(true);
+            newSelectedNearByPassengers[i].SetAutoDetectedNearBy(true, carryingPassenger != null);
         }
     }
 
@@ -150,15 +153,16 @@ public class AutoPassenger : MonoBehaviour
         if (passengerState == PassengerStates.CallingAutoForRide)
         {
             carryingPassenger = passengetToPick;
-            passengetToPick.MoveToAuto();
+            passengetToPick.MoveToAuto(player.playerEfxManager.PlayPassengerCollectedEfx);
             
             ShowDirectionArrow(true);
         }
     }
-
+    
     public void SetDropOfPoint(PassengerPoint dropPoint)
     {
         dropOfPoint = dropPoint;
+        dropOfPoint.ShowActiveEfx();
     }
 
     private void CheckIfDropPointReached()
@@ -174,6 +178,9 @@ public class AutoPassenger : MonoBehaviour
         {
             inGameMoneyManager.TakePaymentFrom(carryingPassenger);
             passengerManager.PassengerDropOff(carryingPassenger);
+            
+            dropOfPoint.RemoveActiveEfx();
+            player.playerEfxManager.PlayRideCompleteEfx();
             
             carryingPassenger.ExitTheRide();
             carryingPassenger = null;

@@ -17,6 +17,9 @@ public class PlayerInteractionManager : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         int objectLayer = 1 << other.gameObject.layer;
+        Debug.Log(objectLayer);
+        Debug.Log(interactiveBuildingLayer);
+        Debug.Log(objectLayer & interactiveBuildingLayer);
         
         if ((objectLayer & interactiveBuildingLayer) != 0)
         {

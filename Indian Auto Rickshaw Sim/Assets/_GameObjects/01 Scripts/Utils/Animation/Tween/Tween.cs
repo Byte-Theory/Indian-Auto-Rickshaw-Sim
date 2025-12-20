@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,12 +16,15 @@ public class Tween : MonoBehaviour
     [Space]
     public TweenData[] tweenCollection;
 
-    [SerializeField]
+    [Header("Testing")] 
+    [SerializeField] private bool testAnim;
+    [SerializeField] private string animName;
 
     private void Awake()
     {
         DOTween.Init();
     }
+
     private void OnEnable()
     {
         TweenEnable();
@@ -29,6 +33,15 @@ public class Tween : MonoBehaviour
     private void OnDisable()
     {
 
+    }
+
+    private void Update()
+    {
+        if (testAnim)
+        {
+            PlayTween(animName);
+            testAnim = false;
+        }
     }
 
     public void PlayTween(string tweenName)
