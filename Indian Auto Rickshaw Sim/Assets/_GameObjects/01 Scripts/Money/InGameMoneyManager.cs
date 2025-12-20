@@ -85,6 +85,8 @@ public class InGameMoneyManager : MonoBehaviour
         }
         
         carryingMoney -= amt;
+        inGameMoneyUi.UpdateMoneyTxt(carryingMoney);
+        
         return true;
     }
 
