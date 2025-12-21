@@ -10,6 +10,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button homeButton;
+    [SerializeField] private Button closeGameButton;
 
     // Ref
     private GameplayTimeManager gameplayTimeManager;
@@ -19,6 +20,7 @@ public class PauseMenu : MonoBehaviour
         pauseButton.onClick.AddListener(OnClickPauseButton);
         resumeButton.onClick.AddListener(OnClickResumeButton);
         homeButton.onClick.AddListener(OnClickHomeButton);
+        closeGameButton.onClick.AddListener(OnClickCloseGameButton);
         
         volumeSlider.onValueChanged.AddListener(OnVolumeSliderChange);
         
@@ -66,6 +68,11 @@ public class PauseMenu : MonoBehaviour
     {
         AudioManager.Instance.PlayAudio(AudioClipType.ButtonClick);
         SceneManager.LoadScene(0);
+    }
+    
+    private void OnClickCloseGameButton()
+    {
+        Application.Quit();
     }
 
     #endregion
