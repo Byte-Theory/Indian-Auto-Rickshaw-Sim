@@ -99,6 +99,9 @@ public class MissionManager : MonoBehaviour
                 if (data.missionRequirement <= 0 || missionCompletionCheck[idx])
                 {
                     InGameMoneyManager.Instance.AddMoney(data.missionReward);
+                    
+                    AudioManager.Instance.PlayAudio(AudioClipType.MissionClaim);
+
                     return true;
                 }
             }

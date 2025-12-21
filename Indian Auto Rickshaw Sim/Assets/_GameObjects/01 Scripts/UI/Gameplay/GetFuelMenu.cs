@@ -93,6 +93,8 @@ public class GetFuelMenu : MonoBehaviour
     private void OnClickOpenFuelMenuButton()
     {
         ShowGetFuelMenu();
+        
+        AudioManager.Instance.PlayAudio(AudioClipType.ButtonClick);
     }
     
     private void OnClickBuyButton()
@@ -109,11 +111,15 @@ public class GetFuelMenu : MonoBehaviour
             
             OnClickCloseButton();
         }
+        
+        AudioManager.Instance.PlayAudio(AudioClipType.ButtonClick);
     }
 
     private void OnClickCloseButton()
     {
         getFuelMenu.SetActive(false);
+        
+        AudioManager.Instance.PlayAudio(AudioClipType.ButtonClick);
     }
 
     #endregion

@@ -89,6 +89,8 @@ public class InGameMoneyManager : MonoBehaviour
         carryingMoney -= amt;
         inGameMoneyUi.UpdateMoneyTxt(carryingMoney);
         
+        AudioManager.Instance.PlayAudio(AudioClipType.MoneySpent);
+        
         return true;
     }
 

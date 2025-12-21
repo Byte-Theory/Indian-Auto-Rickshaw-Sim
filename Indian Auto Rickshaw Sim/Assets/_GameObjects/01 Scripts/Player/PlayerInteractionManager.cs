@@ -5,6 +5,7 @@ public class PlayerInteractionManager : MonoBehaviour
 {
     [Header("Layers")] 
     [SerializeField] private LayerMask interactiveBuildingLayer;
+    [SerializeField] private LayerMask buildingLayer;
     
     // Ref
     private GetFuelMenu getFuelMenu;
@@ -14,12 +15,18 @@ public class PlayerInteractionManager : MonoBehaviour
         getFuelMenu = UiManager.Instance.GamePlayUi.GetFuelMenu;
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        int objectLayer = 1 << other.gameObject.layer;
+        if ((objectLayer & buildingLayer) != 0)
+        {
+            AudioManager.Instance.PlayAudio(AudioClipType.AutoHit);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         int objectLayer = 1 << other.gameObject.layer;
-        Debug.Log(objectLayer);
-        Debug.Log(interactiveBuildingLayer);
-        Debug.Log(objectLayer & interactiveBuildingLayer);
         
         if ((objectLayer & interactiveBuildingLayer) != 0)
         {

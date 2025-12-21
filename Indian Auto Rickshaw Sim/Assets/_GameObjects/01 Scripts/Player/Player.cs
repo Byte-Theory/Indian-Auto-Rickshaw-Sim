@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public FuelTank fuelTank { get; private set; }
     public AutoPassenger autoPassenger { get; private set; }
     public PlayerEfxManager playerEfxManager { get; private set; }
+    public PlayerAudioManager playerAudioManager { get; private set; }
     
     #region Singleton
 
@@ -36,11 +37,13 @@ public class Player : MonoBehaviour
         fuelTank = GetComponent<FuelTank>();
         autoPassenger = GetComponent<AutoPassenger>();
         playerEfxManager = GetComponent<PlayerEfxManager>();
+        playerAudioManager = GetComponent<PlayerAudioManager>();
         
         engine.SetUp(this);
         fuelTank.SetUp(this);
         autoPassenger.SetUp(this);
         playerEfxManager.SetUp();
+        playerAudioManager.SetPlayerDriving(false, true);
         
         SetCurrentState(PlayerState.Running);
     }

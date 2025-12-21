@@ -63,6 +63,8 @@ public class MissionItem : MonoBehaviour
         {
             MissionManager.Instance.GetNewMissionReward(missionData.missionType);
         }
+        
+        AudioManager.Instance.PlayAudio(AudioClipType.ButtonClick);
     }
 
     #endregion

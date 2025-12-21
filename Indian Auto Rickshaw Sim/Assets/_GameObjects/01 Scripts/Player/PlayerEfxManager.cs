@@ -22,6 +22,8 @@ public class PlayerEfxManager : MonoBehaviour
     {
         passengerCollectedEfx.Play();
         containerTween.PlayTween("PassangerCollected");
+        
+        AudioManager.Instance.PlayAudio(AudioClipType.PassengerPickup);
     }
     
     public void PlayRideCompleteEfx()
@@ -32,6 +34,8 @@ public class PlayerEfxManager : MonoBehaviour
             
         GameObject efxGo = ObjectPooler.Instance.SpawnFromPool(2, pos, Quaternion.identity);
         efxGo.GetComponent<ParticleSystem>().Play();
+        
+        AudioManager.Instance.PlayAudio(AudioClipType.PassengerDropped);
     }
 
     #endregion

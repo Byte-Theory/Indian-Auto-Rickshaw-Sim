@@ -68,11 +68,19 @@ public class MissionMenu : MonoBehaviour
     private void OnClickOpenMenuButton()
     {
         missionPanel.SetActive(true);   
+        
+        AudioManager.Instance.PlayAudio(AudioClipType.ButtonClick);
+        
+        GameplayTimeManager.Instance.PauseGame();
     }
 
     private void OnClickCloseMenuButton()
     {
         missionPanel.SetActive(false);
+
+        AudioManager.Instance.PlayAudio(AudioClipType.ButtonClick);
+            
+        GameplayTimeManager.Instance.ResumeGame();
     }
 
     #endregion

@@ -63,6 +63,12 @@ public class AutoPassenger : MonoBehaviour
         for (int i = 0; i < indexToRemoveForNearByDetection.Count; i++)
         {
             int index = indexToRemoveForNearByDetection[i];
+
+            if (index >= selectedNearByPassengers.Count)
+            {
+                continue;
+            }
+            
             Passenger passenger = selectedNearByPassengers[index];
             passenger.SetAutoDetectedNearBy(false);
             selectedNearByPassengers.RemoveAt(index);

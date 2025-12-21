@@ -69,6 +69,8 @@ public class Engine : MonoBehaviour
             backLeftWheelCollider.brakeTorque = maxMotorForce * 1.5f;
             backRightWheelCollider.brakeTorque = maxMotorForce * 1.5f;
             
+            player.playerAudioManager.SetPlayerDriving(false);
+            
             return;
         }
         
@@ -86,6 +88,8 @@ public class Engine : MonoBehaviour
         {
             backRightWheelCollider.brakeTorque = 0;
         }
+        
+        player.playerAudioManager.SetPlayerDriving(acceleration > 0);
     }
 
     private void Turn()
