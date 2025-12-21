@@ -11,15 +11,15 @@ public static class Constants
         public static float PassengerPickUpDist = 5.0f;
         
         // Money
-        public static float MoneyChargesPerUnitDistance = 5.0f;
+        public static float MoneyChargesPerUnitDistance = 12.0f;
         
         // Fuel
-        public static float FuelRate = 8.0f;
+        public static float FuelRate = 10.0f;
     }
     
     public static class PassengerData
     {
-        public static Vector2Int TotalPassengersInLevel = new Vector2Int(40, 70);
+        public static Vector2Int TotalPassengersInLevel = new Vector2Int(50, 90);
         public static float WantToMoveChance = 0.5f;
         public static float RideRequirementChance = 0.5f;
         

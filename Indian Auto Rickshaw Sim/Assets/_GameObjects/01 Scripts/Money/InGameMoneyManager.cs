@@ -71,6 +71,8 @@ public class InGameMoneyManager : MonoBehaviour
         }
         
         inGameMoneyUi.UpdateMoneyTxt(carryingMoney);
+        
+        MissionManager.Instance.OnUpdateMissionProgress(MissionType.EarnMoney, (int)payment);
     }
 
     #endregion
@@ -88,6 +90,12 @@ public class InGameMoneyManager : MonoBehaviour
         inGameMoneyUi.UpdateMoneyTxt(carryingMoney);
         
         return true;
+    }
+
+    public void AddMoney(float amt)
+    {
+        carryingMoney += amt;
+        inGameMoneyUi.UpdateMoneyTxt(carryingMoney);
     }
 
     #endregion

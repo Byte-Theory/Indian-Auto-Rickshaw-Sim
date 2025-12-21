@@ -105,6 +105,8 @@ public class GetFuelMenu : MonoBehaviour
         {
             fuelTank.AddFuel(quantityToAdd);
 
+            MissionManager.Instance.OnUpdateMissionProgress(MissionType.FillFuel, quantityToAdd);
+            
             OnClickCloseButton();
         }
     }

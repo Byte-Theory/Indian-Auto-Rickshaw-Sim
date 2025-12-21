@@ -11,6 +11,7 @@ public class GamePlayUi : MonoBehaviour
     [SerializeField] private PassengersUi passengersUi;
     [SerializeField] private InGameMoneyUi inGameMoneyUi;
     [SerializeField] private GetFuelMenu getFuelMenu;
+    [SerializeField] private MissionMenu missionMenu;
 
     #region Getters / Setters
 
@@ -18,6 +19,7 @@ public class GamePlayUi : MonoBehaviour
     public PassengersUi PassengersUi => passengersUi;
     public InGameMoneyUi InGameMoneyUi => inGameMoneyUi;
     public GetFuelMenu GetFuelMenu => getFuelMenu;
+    public MissionMenu MissionMenu => missionMenu;
 
     #endregion
 

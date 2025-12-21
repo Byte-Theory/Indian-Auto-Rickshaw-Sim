@@ -187,6 +187,8 @@ public class AutoPassenger : MonoBehaviour
             dropOfPoint = null;
 
             ShowDirectionArrow(false);
+            
+            MissionManager.Instance.OnUpdateMissionProgress(MissionType.Passenger, 1);
         }
     }
 

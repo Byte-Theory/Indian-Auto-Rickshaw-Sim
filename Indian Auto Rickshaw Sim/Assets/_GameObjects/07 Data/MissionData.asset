@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444f15119d6206d4d82bc4a5d39a19a4, type: 3}
+  m_Name: MissionData
+  m_EditorClassIdentifier: Assembly-CSharp::MissionData
+  allMissions:
+  - missionType: 0
+    missionDescriptionPrefix: Complete
+    missionDescriptionSuffix: passenger rides
+    missionTargetRange: {x: 4, y: 16}
+    missionRewardRange: {x: 200, y: 600}
+    missionRequirement: 0
+    missionReward: 0
+  - missionType: 1
+    missionDescriptionPrefix: Earm
+    missionDescriptionSuffix: cash
+    missionTargetRange: {x: 100, y: 300}
+    missionRewardRange: {x: 200, y: 600}
+    missionRequirement: 0
+    missionReward: 0
+  - missionType: 2
+    missionDescriptionPrefix: Fill
+    missionDescriptionSuffix: leters of fuel
+    missionTargetRange: {x: 20, y: 200}
+    missionRewardRange: {x: 200, y: 600}
+    missionRequirement: 0
+    missionReward: 0
